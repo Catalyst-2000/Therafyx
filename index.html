@@ -1,207 +1,172 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2487.3">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medical Chatbot UI Extensions Demo</title>
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Medical Chatbot UI Extensions Demo&lt;/title&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body style="font-family: sans-serif;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1 style="text-align: center;"&gt;Medical Chatbot UI Extensions Demo&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;p style="text-align: center;"&gt;This page demonstrates 4 Chatdash + Voiceflow UI extensions: Contact Form, Checkbox Form, Date Picker, and Carousel.&lt;/p&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="cd-widget"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Load React (required for extensions) --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://unpkg.com/react/umd/react.development.js"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://unpkg.com/react-dom/umd/react-dom.development.js"&gt;&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Embed Chatdash + Extensions --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const createExtensionComponent = (renderFunc) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return class ExtensionComponent extends React.Component {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>constructor(props) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>super(props);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>this.elementRef = React.createRef();</p>
-<p class="p1"><span class="Apple-converted-space">          </span>this.cleanupFunction = null;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>componentDidMount() { this.renderExtension(); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>componentDidUpdate(prevProps) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>if (prevProps.isExecuted !== this.props.isExecuted) this.renderExtension();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>componentWillUnmount() {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>if (typeof this.cleanupFunction === 'function') this.cleanupFunction();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>renderExtension() {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>if (this.elementRef.current) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (this.cleanupFunction) this.cleanupFunction();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>this.cleanupFunction = renderFunc(</p>
-<p class="p1"><span class="Apple-converted-space">              </span>this.props.message,</p>
-<p class="p1"><span class="Apple-converted-space">              </span>this.props.handlePathForExtension,</p>
-<p class="p1"><span class="Apple-converted-space">              </span>this.elementRef.current,</p>
-<p class="p1"><span class="Apple-converted-space">              </span>this.props.isExecuted</p>
-<p class="p1"><span class="Apple-converted-space">            </span>);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>shouldComponentUpdate(nextProps) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>return nextProps.message !== this.props.message || nextProps.isExecuted !== this.props.isExecuted;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>render() {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>return React.createElement('div', { ref: this.elementRef });</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>};</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const ContactForm = createExtensionComponent((message, handlePathForExtension, element) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>element.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;form id="contact-form" style="font-family: 'Times New Roman'; color: #FE3A3A;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Name&lt;/label&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="text" name="name" required /&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Phone&lt;/label&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="tel" name="phone" required /&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Email&lt;/label&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="email" name="email" required /&gt;&lt;br/&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;button type="submit"&gt;Submit&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/form&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>element.querySelector('#contact-form').addEventListener('submit', (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>e.preventDefault();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const form = e.target;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>handlePathForExtension({</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: 'complete',</p>
-<p class="p1"><span class="Apple-converted-space">          </span>payload: {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>name: form.name.value,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>phone: form.phone.value,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>email: form.email.value</p>
-<p class="p1"><span class="Apple-converted-space">          </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const CheckboxForm = createExtensionComponent((message, handlePathForExtension, element) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>element.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;form id="checkbox-form" style="font-family: Arial; color: #3E82E9;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;&lt;input type="checkbox" name="option1"&gt; Option 1&lt;/label&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;&lt;input type="checkbox" name="option2"&gt; Option 2&lt;/label&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;&lt;input type="checkbox" name="option3"&gt; Option 3&lt;/label&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;&lt;input type="checkbox" name="option4"&gt; Option 4&lt;/label&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;&lt;input type="checkbox" name="option5"&gt; Option 5&lt;/label&gt;&lt;br/&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Other:&lt;/label&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="text" name="other" /&gt;&lt;br/&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;button type="submit"&gt;Submit&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/form&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>element.querySelector('#checkbox-form').addEventListener('submit', (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>e.preventDefault();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const form = e.target;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>handlePathForExtension({</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: 'complete',</p>
-<p class="p1"><span class="Apple-converted-space">          </span>payload: {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>option1: form.option1.checked,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>option2: form.option2.checked,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>option3: form.option3.checked,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>option4: form.option4.checked,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>option5: form.option5.checked,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>other: form.other.value</p>
-<p class="p1"><span class="Apple-converted-space">          </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const DatePicker = createExtensionComponent((message, handlePathForExtension, element) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>element.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;form id="date-form" style="font-family: Arial;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Select a date:&lt;/label&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="date" name="date" required /&gt;&lt;br/&gt;&lt;br/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;button type="submit"&gt;Submit&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/form&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>element.querySelector('#date-form').addEventListener('submit', (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>e.preventDefault();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const form = e.target;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>handlePathForExtension({</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: 'complete',</p>
-<p class="p1"><span class="Apple-converted-space">          </span>payload: { date: form.date.value }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const Carousel = createExtensionComponent((message, handlePathForExtension, element) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const cards = [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ title: "Acupuncture", img: "https://images.unsplash.com/photo-1598555763574-dca77e10427e?q=80&amp;w=2994&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0" },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ title: "Chiropractic", img: "https://images.unsplash.com/photo-1645005512968-0c1fe99f0093?q=80&amp;w=2940&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0" },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ title: "Bowen Therapy", img: "https://images.unsplash.com/photo-1650044252595-cacd425982ff?q=80&amp;w=2940&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0" },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ title: "Craniosacral Therapy", img: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2024/10/Craniosacral-therapy-head-massage-1200-628-facebook.jpg" },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ title: "Cupping Therapy", img: "https://my.clevelandclinic.org/-/scassets/images/org/health/articles/16554-cupping-therapy" }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const html = cards.map(card =&gt; `</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="display:inline-block; margin:10px; width:150px; text-align:center;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;img src="${card.img}" alt="${card.title}" style="width:100%; height:auto; border-radius:8px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div&gt;${card.title}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`).join('');</p>
-<p class="p1"><span class="Apple-converted-space">      </span>element.innerHTML = `&lt;div style="white-space: nowrap; overflow-x: auto;"&gt;${html}&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// Load Chatdash widget with extensions</p>
-<p class="p1"><span class="Apple-converted-space">    </span>(function() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (window.chatWidgetScriptLoaded) return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>window.ChatWidgetConfig = {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>projectId: "6808ed11c197fd3a7d2a0418",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>extensions: [</p>
-<p class="p1"><span class="Apple-converted-space">          </span>{</p>
-<p class="p1"><span class="Apple-converted-space">            </span>type: 'extension',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>extensionType: 'response',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>name: 'ContactForm',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>match: (msg) =&gt; msg.type === 'ext_contact_form',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>component: ContactForm</p>
-<p class="p1"><span class="Apple-converted-space">          </span>},</p>
-<p class="p1"><span class="Apple-converted-space">          </span>{</p>
-<p class="p1"><span class="Apple-converted-space">            </span>type: 'extension',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>extensionType: 'response',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>name: 'CheckboxForm',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>match: (msg) =&gt; msg.type === 'ext_checkbox_form',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>component: CheckboxForm</p>
-<p class="p1"><span class="Apple-converted-space">          </span>},</p>
-<p class="p1"><span class="Apple-converted-space">          </span>{</p>
-<p class="p1"><span class="Apple-converted-space">            </span>type: 'extension',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>extensionType: 'response',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>name: 'DatePicker',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>match: (msg) =&gt; msg.type === 'ext_date_picker',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>component: DatePicker</p>
-<p class="p1"><span class="Apple-converted-space">          </span>},</p>
-<p class="p1"><span class="Apple-converted-space">          </span>{</p>
-<p class="p1"><span class="Apple-converted-space">            </span>type: 'extension',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>extensionType: 'response',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>name: 'Carousel',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>match: (msg) =&gt; msg.type === 'ext_carousel',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>component: Carousel</p>
-<p class="p1"><span class="Apple-converted-space">          </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>]</p>
-<p class="p1"><span class="Apple-converted-space">      </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>var chatWidgetScript = document.createElement("script");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>chatWidgetScript.type = "text/javascript";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>chatWidgetScript.src = "https://storage.googleapis.com/cdwidget/dist/assets/js/main.js";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.body.appendChild(chatWidgetScript);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>window.chatWidgetScriptLoaded = true;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>})();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <h1 style="text-align: center;">Medical Chatbot UI Extensions Demo</h1>
+  <p style="text-align: center;">This page demonstrates 4 Chatdash + Voiceflow UI extensions: Contact Form, Checkbox Form, Date Picker, and Carousel.</p>
+  <div id="cd-widget"></div>
+
+  <script>
+    window.onload = function () {
+      const createExtensionComponent = (renderFunc) => {
+        return class ExtensionComponent extends React.Component {
+          constructor(props) {
+            super(props);
+            this.elementRef = React.createRef();
+            this.cleanupFunction = null;
+          }
+          componentDidMount() { this.renderExtension(); }
+          componentDidUpdate(prevProps) {
+            if (prevProps.isExecuted !== this.props.isExecuted) this.renderExtension();
+          }
+          componentWillUnmount() {
+            if (typeof this.cleanupFunction === 'function') this.cleanupFunction();
+          }
+          renderExtension() {
+            if (this.elementRef.current) {
+              if (this.cleanupFunction) this.cleanupFunction();
+              this.cleanupFunction = renderFunc(
+                this.props.message,
+                this.props.handlePathForExtension,
+                this.elementRef.current,
+                this.props.isExecuted
+              );
+            }
+          }
+          shouldComponentUpdate(nextProps) {
+            return nextProps.message !== this.props.message || nextProps.isExecuted !== this.props.isExecuted;
+          }
+          render() {
+            return React.createElement('div', { ref: this.elementRef });
+          }
+        };
+      };
+
+      const ContactForm = createExtensionComponent((message, handlePathForExtension, element) => {
+        const formHtml = `
+          <form id="contact-form" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 360px; margin: 0 auto; padding: 20px;">
+            <label for="name" style="display:block; font-size: 24px; font-weight: bold; margin-bottom: 10px;">Name</label>
+            <input type="text" id="name" name="name" required style="width: 100%; background-color: #DCDCDC; border: none; border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 16px;" />
+            <label for="phone" style="display:block; font-size: 16px; margin-bottom: 8px;">Phone</label>
+            <input type="tel" id="phone" name="phone" required style="width: 100%; background-color: #DCDCDC; border: none; border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 16px;" />
+            <label for="email" style="display:block; font-size: 16px; margin-bottom: 8px;">Email</label>
+            <input type="email" id="email" name="email" required style="width: 100%; background-color: #DCDCDC; border: none; border-radius: 8px; padding: 12px; margin-bottom: 24px; font-size: 16px;" />
+            <button type="submit" style="width: 100%; background-color: #cc7232; color: white; border: none; padding: 14px; font-size: 16px; font-weight: 500; border-radius: 8px; cursor: pointer;">Submit!</button>
+          </form>
+        `;
+        element.innerHTML = formHtml;
+        const form = element.querySelector('#contact-form');
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          handlePathForExtension({
+            type: 'complete',
+            payload: {
+              name: form.name.value,
+              phone: form.phone.value,
+              email: form.email.value
+            }
+          });
+        });
+      });
+
+      const CheckboxForm = createExtensionComponent((message, handlePathForExtension, element) => {
+        const formHtml = `
+          <form id="checkbox-form" style="background-color: #f9f6d2; padding: 24px; border-radius: 10px; font-family: Georgia, serif; max-width: 360px; margin: 0 auto;">
+            ${["Dull ache", "Sharp or stabbing", "Stiffness or reduced movement", "Sore or tender to touch", "Burning or hot", "Tingling or pins & needles", "Numbness", "Weakness"]
+              .map((label, i) => `<label style="display:flex; align-items:center; margin-bottom:10px; color:#cc5a5a;"><input type="checkbox" name="opt${i+1}" style="margin-right:10px;" /> ${label}</label>`).join('')}
+            <label style="display: block; margin-top: 10px; margin-bottom: 6px; font-weight: bold; color: #000;">Other:</label>
+            <input type="text" name="other" style="width: 100%; border: none; border-bottom: 2px solid #000; margin-bottom: 20px; font-size: 14px; padding: 6px;" />
+            <button type="submit" style="width: 100%; background-color: #00a5c3; color: white; border: none; padding: 12px; font-size: 16px; border-radius: 6px; cursor: pointer;">Submit!</button>
+          </form>
+        `;
+        element.innerHTML = formHtml;
+        const form = element.querySelector('#checkbox-form');
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const data = { other: form.other.value };
+          for (let i = 1; i <= 8; i++) data[`opt${i}`] = form[`opt${i}`]?.checked || false;
+          handlePathForExtension({ type: 'complete', payload: data });
+        });
+      });
+
+      const DatePicker = createExtensionComponent((message, handlePathForExtension, element) => {
+        const formHtml = `
+          <form id="date-form" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 360px; margin: 0 auto; padding: 20px; background-color: #FFA3A3; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <label for="date" style="display: block; font-size: 16px; margin-bottom: 10px; color: #333; font-weight: 500;">Please select a date:</label>
+            <input type="date" name="date" id="date" required style="width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; background-color: #fff; margin-bottom: 20px; box-sizing: border-box;" />
+            <button type="submit" style="width: 100%; background-color: #3e82f7; color: white; border: none; padding: 12px; font-size: 16px; border-radius: 6px; cursor: pointer; font-weight: 500;">Confirm</button>
+          </form>
+        `;
+        element.innerHTML = formHtml;
+        const form = element.querySelector('#date-form');
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          handlePathForExtension({
+            type: 'complete',
+            payload: { date: form.date.value }
+          });
+        });
+      });
+
+      const Carousel = createExtensionComponent((message, handlePathForExtension, element) => {
+        const cards = [
+          { title: "Acupuncture", img: "https://images.unsplash.com/photo-1598555763574-dca77e10427e" },
+          { title: "Chiropractic", img: "https://images.unsplash.com/photo-1645005512968-0c1fe99f0093" },
+          { title: "Bowen Therapy", img: "https://images.unsplash.com/photo-1650044252595-cacd425982ff" },
+          { title: "Craniosacral Therapy", img: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2024/10/Craniosacral-therapy-head-massage-1200-628-facebook.jpg" },
+          { title: "Cupping Therapy", img: "https://my.clevelandclinic.org/-/scassets/images/org/health/articles/16554-cupping-therapy" }
+        ];
+
+        const html = `
+          <style>
+            .carousel-wrapper::-webkit-scrollbar { height: 8px; }
+            .carousel-wrapper::-webkit-scrollbar-track { background: #eee; border-radius: 4px; }
+            .carousel-wrapper::-webkit-scrollbar-thumb { background: #3e82f7; border-radius: 4px; }
+            .carousel-wrapper { scrollbar-color: #3e82f7 #eee; scrollbar-width: thin; }
+            .scroll-cue {
+              text-align: center;
+              font-size: 14px;
+              color: #888;
+              margin-top: 8px;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            }
+          </style>
+          <div>
+            <div class="carousel-wrapper" style="display: flex; overflow-x: auto; white-space: nowrap; gap: 16px; padding: 12px; box-sizing: border-box; scroll-snap-type: x mandatory;">
+              ${cards.map(card => `
+                <div style="flex: 0 0 auto; width: 180px; background: #ffffff; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); scroll-snap-align: start; text-align: center;">
+                  <img src="${card.img}" alt="${card.title}" style="width: 100%; height: 120px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;" />
+                  <div style="padding: 10px; font-size: 16px; font-weight: 500; color: #333;">${card.title}</div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="scroll-cue">← Scroll →</div>
+          </div>
+        `;
+        element.innerHTML = html;
+      });
+
+      window.ChatWidgetConfig = {
+        projectId: "6808ed11c197fd3a7d2a0418",
+        extensions: [
+          { type: 'extension', extensionType: 'response', name: 'ContactForm', match: (msg) => msg.type === 'ext_contact_form', component: ContactForm },
+          { type: 'extension', extensionType: 'response', name: 'CheckboxForm', match: (msg) => msg.type === 'ext_checkbox_form', component: CheckboxForm },
+          { type: 'extension', extensionType: 'response', name: 'DatePicker', match: (msg) => msg.type === 'ext_date_picker', component: DatePicker },
+          { type: 'extension', extensionType: 'response', name: 'Carousel', match: (msg) => msg.type === 'ext_carousel', component: Carousel }
+        ]
+      };
+
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "https://storage.googleapis.com/cdwidget/dist/assets/js/main.js";
+      document.body.appendChild(script);
+    };
+  </script>
 </body>
 </html>
